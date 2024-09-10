@@ -1,6 +1,7 @@
 Integrantes:
 
-39.956.920 Christian Pari-Salazar 
+39.956.920 Christian Pari-Salazar
+
 [christian.parisalazar@gmail.com](mailto:christian.parisalazar@gmail.com) ,
 
 https://github.com/Criso32
