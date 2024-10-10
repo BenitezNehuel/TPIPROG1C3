@@ -1,8 +1,8 @@
 ## **Integrantes:**
+         
+46.034.911, *Celeste Veronese*
+[celesteveronese12@gmail.com](mailto:celesteveronese12@gmail.com)
 
-39.956.920, **Christian Pari-Salazar**  
-[christian.parisalazar@gmail.com](mailto:christian.parisalazar@gmail.com)  
-https://github.com/Criso32
 
  41.280.801, **Agustin Delpino**  
 [agusdelpino07@gmail.com](mailto:agusdelpino07@gmail.com)  
