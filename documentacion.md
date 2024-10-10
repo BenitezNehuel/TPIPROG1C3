@@ -1,6 +1,6 @@
 ## **Integrantes:**
          
-46.034.911, *Celeste Veronese*
+46.034.911, **Celeste Veronese**  
 [celesteveronese12@gmail.com](mailto:celesteveronese12@gmail.com)
 
 
