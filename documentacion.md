@@ -1,7 +1,8 @@
 ## **Integrantes:**
          
 46.034.911, **Celeste Veronese**  
-[celesteveronese12@gmail.com](mailto:celesteveronese12@gmail.com)
+[celesteveronese12@gmail.com](mailto:celesteveronese12@gmail.com)  
+https://github.com/CeVeronese
 
 
  41.280.801, **Agustin Delpino**  
