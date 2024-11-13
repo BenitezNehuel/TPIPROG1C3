@@ -1,10 +1,19 @@
 print("Estas encerrado en una habitacion a oscuras. Podes ver una pequeña luz salir de una puerta cerrada. ¡Busca una forma de salir!")
-lucesPrendidas = False
-escritorioCorrido = False
+luces_prendidas = False
+escritorio_corrido = False
 escape = False
 llave = False
 ultravioleta = False
-def cuarto_visible():
+def candadoCerrado():
+    print("       _____________ ")
+    print("      |             |")
+    print("      | [4][5][6][7]|")
+    print("      |_____________|")
+    print("        ||      ||")
+    print("        ||      ||")
+    print("        ||______||")
+    print("        |________|")
+def cuartoVisible():
     print("+------------------------------------------+")
     print("|                   [Cuadro]               |")
     print("|                                          |")
@@ -27,7 +36,7 @@ def cuarto_visible():
     print("|                                          |")
     print("|                           [Puerta]       |")
     print("+------------------------------------------+")
-def mostrar_cuadro_real():
+def mostrarCuadroReal():
     
     print( "+-----------------------+")
     print( "|   #################   |")
@@ -45,7 +54,7 @@ def mostrar_cuadro_real():
     print( "|         1626          |")
     print( "+-----------------------+")
 
-def mostrar_cuadro():
+def mostrarCuadro():
     
     print( "+-----------------------+")
     print( "|   #################   |")
@@ -67,39 +76,40 @@ while not escape :
     intro = int(input("-->"))
 
     if intro == 1:
-        if not lucesPrendidas:
+        if not luces_prendidas:
             print("No podes ver nada, esta todo oscuro.")
-        elif lucesPrendidas:
+        elif luces_prendidas:
             print("Podes ver la habitacion y los objetos alrededor.")
-            print(cuarto_visible())
+            print(cuartoVisible())
     
     elif intro == 2:
-        if not lucesPrendidas:
+        if not luces_prendidas:
             print("Decidis caminar por la habitación a oscuras. Te golpeás con algunas paredes y finalmente encontrás un escritorio.")
             print("\n1. Examinar escritorio\n2. Dejarlo\n3. Correr escritorio")
-            caminarHabitacion = int(input("-->"))
+            caminar_habitacion = int(input("-->"))
 
-            if caminarHabitacion == 1:
-                print("Al tacto se siente como cualquier escritorio normal de madera. tiene un cajon que no puedes abrir")
-            elif caminarHabitacion == 2:
+            if caminar_habitacion == 1:
+                if luces_prendidas:
+                    print("Al tacto se siente como cualquier escritorio normal de madera. tiene un cajon que no puedes abrir")
+            elif caminar_habitacion == 2:
                 print("Decidís dejar el escritorio y seguir explorando.")
-            elif caminarHabitacion == 3:
-                escritorioCorrido = True
+            elif caminar_habitacion == 3:
+                escritorio_corrido = True
                 print("Corriste el escritorio y encontraste un interruptor detras de el.")
                 print("1. Presionar interruptor\n2. Dejarlo\n3. Acomodar escritorio")
-                correrEscritorio = int(input("-->"))
+                correr_escritorio = int(input("-->"))
 
-                if correrEscritorio == 1:
-                    if not lucesPrendidas:
-                        lucesPrendidas = True
+                if correr_escritorio == 1:
+                    if not luces_prendidas:
+                        luces_prendidas = True
                         print("¡Se hizo la luz!")
                     else:
-                        lucesPrendidas = False
+                        luces_prendidas = False
                         print("Se apago la luz")
                     
-                elif correrEscritorio == 2:
+                elif correr_escritorio == 2:
                     print("Decidis no tocar el interruptor.")
-                elif correrEscritorio == 3:
+                elif correr_escritorio == 3:
                     print("Acomodas el escritorio en su lugar.")
 
         else:
@@ -116,21 +126,23 @@ while not escape :
             elif explorarHabitacion == 3:
                 if ultravioleta:
                     print("Examinás el cuadro unos minutos, y utilizando la luz ultravioleta notas algo raro en la parte baja del cuadro, parece una clave.")
-                    print(mostrar_cuadro_real())
+                    print(mostrarCuadroReal())
                 else:
                     print("Examinas el cuadro unos minutos pero no encuentras nada particular")
-                    print(mostrar_cuadro())
+                    print(mostrarCuadro())
             elif explorarHabitacion == 4:
+                print("Ahora que ves el escritorio con claridad, notas que el cajon tiene un candado cidrado con 4 numeros.")
+                print(candadoCerrado())
                 print("\n1. tocar interruptor\n2. abrir cajon")
-                menuEscritorio = int(input())
-                if menuEscritorio == 1:
-                    if not lucesPrendidas:
-                        lucesPrendidas = True
+                menu_escritorio = int(input())
+                if menu_escritorio == 1:
+                    if not luces_prendidas:
+                        luces_prendidas = True
                         print("¡Se hizo la luz!")
                     else:
-                        lucesPrendidas = False
+                        luces_prendidas = False
                         print("Se apago la luz")
-                elif menuEscritorio == 2:
+                elif menu_escritorio == 2:
                     print("ingrese la clave de 4 digitos:")
                     clave = int(input())
                     if clave == 1626:
