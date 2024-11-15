@@ -75,7 +75,7 @@ def mostrarCuadro():
     print( "|         ####          |")
     print( "+-----------------------+")
 
-#bucle while principal(solo al abrir la puerta saldremos del bucle)
+#bucle while principal (solo al abrir la puerta saldremos del bucle)
 while not escape :
     print("\n1. Mirar a tu alrededor\n2. Caminar por la habitacion\n3. Intentar abrir la puerta")
     intro = int(input("-->"))
