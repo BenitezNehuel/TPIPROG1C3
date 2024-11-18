@@ -2,7 +2,7 @@ def iniciarJuego():
     salir = False
     while salir == False:
         print("🤖 LightBot 💡")
-        print("1) Cargar partida")
+        print("1) Cargar partida (Nivel",cargarEstadisticas()["nivel"]+")")
         print("2) Reiniciar progreso")
         print("3) Salir")
         opcion = str(input("-> "))
@@ -10,13 +10,14 @@ def iniciarJuego():
             case "1":
                 return cargarEstadisticas()
             case "2":
-                return reiniciarEstadisticas()
+                reiniciarEstadisticas()
+                return cargarEstadisticas()
             case "3":
-                salir==False #Hay que conectarlo al menú
+                salir=True #Hay que conectarlo al menú
 
 def reiniciarEstadisticas():
     estadisticas = open("estadisticas.txt", "w")
-    nivel = 0
+    nivel = 1
     luces_conseguidas = 0
     tiempo_jugado = 0
     estadisticas.write("nivel "+str(nivel)+"\nluces_conseguidas "+str(luces_conseguidas)+"\ntiempo_jugado "+str(tiempo_jugado))
@@ -33,6 +34,29 @@ def cargarEstadisticas():
     estadisticas.close()
     print(datos)
     return datos
+
+def puntoMasCercano():
+    distancia = 999
+    luz_cercana_posicion = [0,0]
+    for fila in range(filas):
+        for columna in range(columnas):
+            if nivel[fila][columna]=="💡":
+                if distanciaManhattan(fila,columna)<distancia:
+                    distancia=distanciaManhattan(fila,columna)
+                    luz_cercana_posicion[0] = fila
+                    luz_cercana_posicion[1] = columna
+    r = ("El punto más cercano esta a",distancia,"movimientos\nEn x",luz_cercana_posicion[0],". y",luz_cercana_posicion[1])
+    return r
+
+def distanciaManhattan(fila,columna):
+    #La formula es (x2-x1)+(y2-y1)
+    #Se debe usar el valor absoluto del resultado de cada resta.
+    return valorAbsoluto(fila-posicion_jugador[0])+valorAbsoluto(columna-posicion_jugador[1])
+
+def valorAbsoluto(resta_distancia):
+    if resta_distancia<0:
+        resta_distancia *=-1
+    return resta_distancia
 
 def crearNivel(posicion_jugador):
     nivel = [["⬜" for i in range(columnas)] for j in range(filas)]
@@ -83,9 +107,10 @@ def crearPuntos(cantidadPuntos,posicion_jugador):
             puntos_creados +=1
 
 #-----------Programa principal -----------
-import random #Preguntar a la profe si se puede usar.
+import random 
 
 #Inicio del juego - menú
+global datos
 datos = iniciarJuego()
 
 #Definir area del nivel
@@ -93,9 +118,9 @@ global filas
 global columnas
 
 
-filas= int(datos["nivel"])
+filas= int(datos["nivel"])+3
 
-columnas= int(datos["nivel"])
+columnas= int(datos["nivel"])+3
 
 
 #Cargar posicion inicial del jugador
@@ -107,9 +132,11 @@ nivel = crearNivel(posicion_jugador)
 cantidadPuntos = random.randint(0,4)
 crearPuntos(cantidadPuntos,posicion_jugador)
 
+
 salir = False
 mostrarNivel()
 while not salir:
+    print(puntoMasCercano())
     print("1) Derecha.\n2) Izquierda.\n3)Arriba.\n4) Abajo.\n10) Salir.")
     movimientos = input("Ingrese la secuencia de movimientos separadas por espacios")
     if movimientos != "10":
@@ -118,11 +145,10 @@ while not salir:
         salir = True
 
 #Anotaciones:
-#limitar la cantidad de movimientos para añadir dificultad
-#Generar puntos por los que el jugador deba pasar
+#limitar la cantidad de movimientos para añadir dificultad ⌛
+#Generar puntos por los que el jugador deba pasar ✔
 
 
 #Sugerencias y revisiones:
-#Al final si hice lo de abajo Xd
-#Tal vez crear un algoritmo que verifique la creación de puntos aleatorios <- No es buena idea para este trabajo
+#Esto de acá abajo se puede hacer tanto como no
 #*Añadir una opción de encender luz para evitar que se pueda resolver recorriendo todo aleatoriamente*
