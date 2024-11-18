@@ -48,7 +48,7 @@ def puntoMasCercano():
     r = ("El punto más cercano esta a",distancia,"movimientos\nEn x",luz_cercana_posicion[0],". y",luz_cercana_posicion[1])
     return r
 
-def distanciaManhattan(fila,columna):
+def distanciaManhattan(fila,columna): 
     #La formula es (x2-x1)+(y2-y1)
     #Se debe usar el valor absoluto del resultado de cada resta.
     return valorAbsoluto(fila-posicion_jugador[0])+valorAbsoluto(columna-posicion_jugador[1])
