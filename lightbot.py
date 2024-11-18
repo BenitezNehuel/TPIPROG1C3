@@ -1,15 +1,27 @@
-def CrearNivel(posicion_jugador):
+def cargarEstadisticas():
+    estadisticas = open("estadisticas.txt", "r")
+    datos = {}
+    estadisticas_separadas = estadisticas.readlines()
+    for linea in estadisticas_separadas:
+        clave = (linea.strip().split())[0]
+        valor = (linea.strip().split())[1]
+        datos[clave] = valor
+    estadisticas.close()
+    print(datos)
+    return datos
+
+def crearNivel(posicion_jugador):
     nivel = [["⬜" for i in range(columnas)] for j in range(filas)]
     nivel[posicion_jugador[0]][posicion_jugador[1]] = "🤖"
     return nivel
 
-def MostrarNivel():
+def mostrarNivel():
     for i in range(filas):
         for j in range(columnas):
             print(nivel[i][j],end="")
         print("")
 
-def Movimiento(movimientos, posicion_jugador):
+def movimiento(movimientos, posicion_jugador):
     #Recorrer la cadena con la secuencia de movimientos ingresada
     for i in range(0,len(movimientos),2):
         nivel[posicion_jugador[0]][posicion_jugador[1]] = "⬜"
@@ -43,37 +55,41 @@ def crearPuntos(cantidadPuntos,posicion_jugador):
     while puntos_creados<cantidadPuntos:
         posicion_punto = [random.randint(0,filas-1),random.randint(0,columnas-1)]
         if posicion_jugador!=posicion_punto:
-            nivel[(posicion_punto[0])][(posicion_punto[1])] = "🕯️"
+            nivel[(posicion_punto[0])][(posicion_punto[1])] = "💡"
             puntos_creados +=1
 
 #-----------Programa principal -----------
 import random #Preguntar a la profe si se puede usar.
 
 #Definir area del nivel
+
+datos = cargarEstadisticas()
+
 global filas
 global columnas
 
-filas= 4 
-columnas= 4
+filas= int(datos["nivel"])
+
+columnas= int(datos["nivel"])
+
 
 #Cargar posicion inicial del jugador
 #¿Hacer aleatoria o iniciar en niveles fijos?
 posicion_jugador = [0,0]
-nivel = CrearNivel(posicion_jugador)
+nivel = crearNivel(posicion_jugador)
 
 #Crear puntos por los que el jugador debe pasar.
 cantidadPuntos = random.randint(0,4)
 crearPuntos(cantidadPuntos,posicion_jugador)
 
 
-
 salir = False
-MostrarNivel()
+mostrarNivel()
 while not salir:
     print("1) Derecha.\n2) Izquierda.\n3)Arriba.\n4) Abajo.\n10) Salir.")
     movimientos = input("Ingrese la secuencia de movimientos separadas por espacios")
     if movimientos != "10":
-        Movimiento(movimientos,posicion_jugador)
+        movimiento(movimientos,posicion_jugador)
     else:
         salir = True
 
