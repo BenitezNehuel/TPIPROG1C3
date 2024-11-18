@@ -1,3 +1,27 @@
+def iniciarJuego():
+    salir = False
+    while salir == False:
+        print("🤖 LightBot 💡")
+        print("1) Cargar partida")
+        print("2) Reiniciar progreso")
+        print("3) Salir")
+        opcion = str(input("-> "))
+        match opcion:
+            case "1":
+                return cargarEstadisticas()
+            case "2":
+                return reiniciarEstadisticas()
+            case "3":
+                salir==False #Hay que conectarlo al menú
+
+def reiniciarEstadisticas():
+    estadisticas = open("estadisticas.txt", "w")
+    nivel = 0
+    luces_conseguidas = 0
+    tiempo_jugado = 0
+    estadisticas.write("nivel "+str(nivel)+"\nluces_conseguidas "+str(luces_conseguidas)+"\ntiempo_jugado "+str(tiempo_jugado))
+    estadisticas.close()
+
 def cargarEstadisticas():
     estadisticas = open("estadisticas.txt", "r")
     datos = {}
@@ -29,22 +53,22 @@ def movimiento(movimientos, posicion_jugador):
             case 1: #Derecha
                 posicion_jugador[1] = posicion_jugador[1]+1
                 nivel[posicion_jugador[0]][posicion_jugador[1]] = "🤖"
-                MostrarNivel()
+                mostrarNivel()
                 print(posicion_jugador)
             case 2: #Izquierda
                 posicion_jugador[1] = posicion_jugador[1]-1
                 nivel[posicion_jugador[0]][posicion_jugador[1]] = "🤖"
-                MostrarNivel()
+                mostrarNivel()
                 print(posicion_jugador)
             case 3: #Arriba
                 posicion_jugador[0] = posicion_jugador[0]-1
                 nivel[posicion_jugador[0]][posicion_jugador[1]] = "🤖"
-                MostrarNivel()
+                mostrarNivel()
                 print(posicion_jugador)
             case 4: #Abajo
                 posicion_jugador[0] = posicion_jugador[0]+1
                 nivel[posicion_jugador[0]][posicion_jugador[1]] = "🤖"
-                MostrarNivel()
+                mostrarNivel()
                 print(posicion_jugador)
             case _:
                 print("La secuencia no es correcta")
@@ -61,12 +85,13 @@ def crearPuntos(cantidadPuntos,posicion_jugador):
 #-----------Programa principal -----------
 import random #Preguntar a la profe si se puede usar.
 
+#Inicio del juego - menú
+datos = iniciarJuego()
+
 #Definir area del nivel
-
-datos = cargarEstadisticas()
-
 global filas
 global columnas
+
 
 filas= int(datos["nivel"])
 
@@ -81,7 +106,6 @@ nivel = crearNivel(posicion_jugador)
 #Crear puntos por los que el jugador debe pasar.
 cantidadPuntos = random.randint(0,4)
 crearPuntos(cantidadPuntos,posicion_jugador)
-
 
 salir = False
 mostrarNivel()
