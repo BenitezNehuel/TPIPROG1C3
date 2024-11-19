@@ -1,32 +1,19 @@
 def iniciarJuego():
     salir = False
-    global iniciar_reloj
     while salir == False:
         print("🤖 LightBot 💡")
-        print("1) Cargar partida")
-        print("     -Nivel",str(cargarEstadisticas()["nivel"])+"\n     -Luces conseguidas: "+str(cargarEstadisticas()["luces_conseguidas"])+"\n     -Tiempo jugado:",tiempoJugado(cargarEstadisticas()["tiempo_jugado"]))
+        print("1) Cargar partida (Nivel",str(cargarEstadisticas()["nivel"])+")")
         print("2) Reiniciar progreso")
         print("3) Salir")
         opcion = str(input("-> "))
         match opcion:
             case "1":
-                iniciar_reloj = time.time()
                 return cargarEstadisticas()
             case "2":
-                iniciar_reloj = time.time()
                 reiniciarEstadisticas()
                 return cargarEstadisticas()
             case "3":
                 salir=True #Hay que conectarlo al menú
-        os.system("cls")
-
-def tiempoJugado(tiempo):
-    if tiempo<60:
-        return(str(tiempo)+" segundos")
-    elif tiempo<3600:
-        return str(tiempo//60)+" minutos"
-    else:
-        return str((tiempo/60)/60)+" horas"
 
 def iniciarNivel():
     os.system('cls')
@@ -38,8 +25,6 @@ def iniciarNivel():
 
     columnas= int(datos["nivel"])+3
 
-    #Cargar posicion inicial del jugador
-    #¿Hacer aleatoria o iniciar en niveles fijos?ç
     global posicion_jugador
     posicion_jugador = [0,0]
     global nivel
@@ -75,9 +60,6 @@ def juegoMenu():
                 print("La secuencia ingresada excede la cantidad de movimientos permitidos en este momento.")
                 mostrarNivel()
         else:
-            finalizar_reloj = time.time()
-            datos["tiempo_jugado"] += int(finalizar_reloj-iniciar_reloj)
-            actualizarEstadisticas()
             salir = True
 
 def reiniciarEstadisticas():
@@ -96,7 +78,7 @@ def cargarEstadisticas():
         valor = int((linea.strip().split())[1])
         datos[clave] = valor
     estadisticas.close()
-    #print(datos)
+    print(datos)
     return datos
 
 def actualizarEstadisticas():
@@ -113,7 +95,6 @@ def puntoMasCercano():
                     distancia=distanciaManhattan(fila,columna)
                     luz_cercana_posicion[0] = fila
                     luz_cercana_posicion[1] = columna
-    #r = ("El punto más cercano esta a",distancia,"movimientos\nEn x",luz_cercana_posicion[0],". y",luz_cercana_posicion[1])
     print("Tienes",distancia,"movimientos máximos para llegar a la luz más cercana")
     return distancia
 
@@ -133,7 +114,7 @@ def crearNivel(posicion_jugador):
     return nivel
 
 def mostrarNivel():
-    print("| Nivel",datos["nivel"],"| Luces restantes",cantidadPuntos,"|","Luces totales conseguidas",datos["luces_conseguidas"])
+    print("| Nivel",datos["nivel"],"| Luces restantes",cantidadPuntos,"|")
     for i in range(filas):
         for j in range(columnas):
             print(nivel[i][j],end="")
@@ -148,61 +129,54 @@ def movimiento(movimientos, posicion_jugador):
 
     luz_encontrada = False
     #Recorrer la cadena con la secuencia de movimientos ingresada
-    try:
-        for i in range(0,len(movimientos),2):
-            nivel[posicion_jugador[0]][posicion_jugador[1]] = "⬜"
-            os.system("cls")
-            match int(movimientos[i]):
-                case 1: #Derecha
-                    posicion_jugador[1] = posicion_jugador[1]+1
-                    luz_encontrada = verificarLuz()
-                    nivel[posicion_jugador[0]][posicion_jugador[1]] = "🤖"
-                    mostrarNivel()
-                    #print(posicion_jugador)
-                case 2: #Izquierda
-                    posicion_jugador[1] = posicion_jugador[1]-1
-                    luz_encontrada = verificarLuz()
-                    nivel[posicion_jugador[0]][posicion_jugador[1]] = "🤖"
-                    mostrarNivel()
-                    #print(posicion_jugador)
-                case 3: #Arriba
-                    posicion_jugador[0] = posicion_jugador[0]-1
-                    luz_encontrada = verificarLuz()
-                    nivel[posicion_jugador[0]][posicion_jugador[1]] = "🤖"
-                    mostrarNivel()
-                    #print(posicion_jugador)
-                case 4: #Abajo
-                    posicion_jugador[0] = posicion_jugador[0]+1
-                    luz_encontrada = verificarLuz()
-                    nivel[posicion_jugador[0]][posicion_jugador[1]] = "🤖"
-                    mostrarNivel()
-                    #print(posicion_jugador)
-                case _:
-                    print("La secuencia no es correcta")
-                    nivel = nivel_copia
-                    break
-            if cantidadPuntos==0:
-                terminarNivel()
-                global datos
-                datos = cargarEstadisticas()
-                iniciarNivel()
+    for i in range(0,len(movimientos),2):
+        nivel[posicion_jugador[0]][posicion_jugador[1]] = "⬜"
+        os.system("cls")
+        match int(movimientos[i]):
+            case 1: #Derecha
+                posicion_jugador[1] = posicion_jugador[1]+1
+                luz_encontrada = verificarLuz()
+                nivel[posicion_jugador[0]][posicion_jugador[1]] = "🤖"
+                mostrarNivel()
+                print(posicion_jugador)
+            case 2: #Izquierda
+                posicion_jugador[1] = posicion_jugador[1]-1
+                luz_encontrada = verificarLuz()
+                nivel[posicion_jugador[0]][posicion_jugador[1]] = "🤖"
+                mostrarNivel()
+                print(posicion_jugador)
+            case 3: #Arriba
+                posicion_jugador[0] = posicion_jugador[0]-1
+                luz_encontrada = verificarLuz()
+                nivel[posicion_jugador[0]][posicion_jugador[1]] = "🤖"
+                mostrarNivel()
+                print(posicion_jugador)
+            case 4: #Abajo
+                posicion_jugador[0] = posicion_jugador[0]+1
+                luz_encontrada = verificarLuz()
+                nivel[posicion_jugador[0]][posicion_jugador[1]] = "🤖"
+                mostrarNivel()
+                print(posicion_jugador)
+            case _:
+                print("La secuencia no es correcta")
+                nivel = nivel_copia
                 break
-            time.sleep(0.5)
-        if not luz_encontrada:
-            print("La secuencia no es correcta, regresando a la posición inicial.")
-            for i in range(5,0,-1):
-                time.sleep(1)
-                print("Reiniciando en",i,"segundos.")
-            os.system("cls")
-            nivel = nivel_copia
-            posicion_jugador[0] = ultima_luz_encontrada[0]
-            posicion_jugador[1] = ultima_luz_encontrada[1]
-            mostrarNivel()
-    except:
-        print("Ocurrio un problema leyendo la secuencia.")
+        if cantidadPuntos==0:
+            terminarNivel()
+            global datos
+            datos = cargarEstadisticas()
+            iniciarNivel()
+            break
+        time.sleep(0.5)
+    if not luz_encontrada:
+        print("la secuencia no es correcta, regresando a la posición inicial.")
+        for i in range(5,0,-1):
+            time.sleep(1)
+            print("Reiniciando en",i,"segundos.")
+        os.system("cls")
+        nivel = nivel_copia
         posicion_jugador[0] = ultima_luz_encontrada[0]
         posicion_jugador[1] = ultima_luz_encontrada[1]
-        nivel[posicion_jugador[0]][posicion_jugador[1]] = "🤖"
         mostrarNivel()
             
 def terminarNivel():
@@ -239,8 +213,6 @@ def crearPuntos(cantidadPuntos,posicion_jugador):
 import random
 import time
 import os
-
-os.system("cls")
 
 global ultima_luz_encontrada
 ultima_luz_encontrada=[0,0]

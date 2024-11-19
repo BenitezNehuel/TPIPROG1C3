@@ -1,3 +1,3 @@
-nivel 5
-luces_conseguidas 38
-tiempo_jugado 0
+nivel 3
+luces_conseguidas 6
+tiempo_jugado 3609
