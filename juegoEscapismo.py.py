@@ -78,20 +78,28 @@ def mostrarCuadro():
 #bucle while principal (solo al abrir la puerta saldremos del bucle)
 while not escape :
     print("\n1. Mirar a tu alrededor\n2. Caminar por la habitacion\n3. Intentar abrir la puerta")
-    intro = int(input("-->"))
+    try:
+        intro = int(input("--> "))
+    except ValueError:
+        print("¡Error! Tenés que ingresar un número válido.")
+        continue
 
     if intro == 1:
         if not luces_prendidas:
             print("No podes ver nada, esta todo oscuro.")
         elif luces_prendidas:
             print("Podes ver la habitacion y los objetos alrededor.")
-            print(cuartoVisible())
+            cuartoVisible()
     
     elif intro == 2:
         if not luces_prendidas:
             print("Decidis caminar por la habitación a oscuras. Te golpeás con algunas paredes y finalmente encontrás un escritorio.")
             print("\n1. Examinar escritorio\n2. Dejarlo\n3. Correr escritorio")
-            caminar_habitacion = int(input("-->"))
+            try:
+                caminar_habitacion = int(input("--> "))
+            except ValueError:
+                print("¡Error! Tenés que ingresar un número válido.")
+                continue
 
             if caminar_habitacion == 1:
                     print("Al tacto se siente como cualquier escritorio normal de madera. tiene un cajon que no puedes abrir")
@@ -101,8 +109,11 @@ while not escape :
                 escritorio_corrido = True
                 print("Corriste el escritorio y encontraste un interruptor detras de el.")
                 print("1. Presionar interruptor\n2. Dejarlo\n3. Acomodar escritorio")
-                correr_escritorio = int(input("-->"))
-
+                try:
+                    correr_escritorio = int(input("--> "))
+                except ValueError:
+                    print("¡Error! Tenés que ingresar un número válido.")
+                    continue
                 if correr_escritorio == 1:
                     if not luces_prendidas:
                         luces_prendidas = True
@@ -120,7 +131,12 @@ while not escape :
             print("Ahora que hay luz, podes ver distintos objetos en la habitacion.")
 
             print("\n1. Examinar armario\n2. Examinar cama\n3. Examinar cuadro\n4.Examinar escritorio")
-            explorar_habitacion = int(input("-->"))
+            try:
+                explorar_habitacion = int(input("--> "))
+            except ValueError:
+                print("¡Error! Tenés que ingresar un número válido.")
+                continue
+           
 
             if explorar_habitacion == 1:
                 print("Abris el armario y encontras una LUZ ULTRAVIOLETA.")
@@ -131,15 +147,20 @@ while not escape :
             elif explorar_habitacion == 3:
                 if ultravioleta:
                     print("Examinás el cuadro unos minutos, y utilizando la luz ultravioleta notas algo raro en la parte baja del cuadro, parece una clave.")
-                    print(mostrarCuadroReal())
+                    mostrarCuadroReal()
                 else:
                     print("Examinas el cuadro unos minutos pero no encuentras nada particular")
-                    print(mostrarCuadro())
+                    mostrarCuadro()
             elif explorar_habitacion == 4:
                 print("Ahora que ves el escritorio con claridad, notas que el cajon tiene un candado cidrado con 4 numeros.")
-                print(candadoCerrado())
+                candadoCerrado()
                 print("\n1. tocar interruptor\n2. abrir cajon")
-                menu_escritorio = int(input())
+                try:
+                    menu_escritorio = int(input("--> "))
+                except ValueError:
+                    print("¡Error! Tenés que ingresar un número válido.")
+                    continue
+                
                 if menu_escritorio == 1:
                     if not luces_prendidas:
                         luces_prendidas = True
@@ -149,7 +170,12 @@ while not escape :
                         print("Se apago la luz")
                 elif menu_escritorio == 2:
                     print("ingresa la clave de 4 digitos:")
-                    clave = int(input())
+                    try:
+                        clave = int(input("--> "))
+                    except ValueError:
+                        print("¡Error! Tenés que ingresar un número válido.")
+                        continue
+                    
                     if clave == 1626:
                         print("Lograste abrir el cajon!. Conseguiste UNA LLAVE")
                         llave = True
