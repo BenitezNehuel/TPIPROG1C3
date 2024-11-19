@@ -208,7 +208,7 @@ def crearPuntos(cantidadPuntos,posicion_jugador):
     puntos_creados = 0
     while puntos_creados<cantidadPuntos:
         posicion_punto = [random.randint(0,filas-1),random.randint(0,columnas-1)]
-        if posicion_jugador!=posicion_punto:
+        if posicion_jugador!=posicion_punto and nivel[posicion_punto[0]][posicion_punto[1]]!="💡":
             nivel[(posicion_punto[0])][(posicion_punto[1])] = "💡"
             puntos_creados +=1
 
@@ -227,4 +227,8 @@ iniciarNivel()
 
 
 #Anotaciones:
-#limitar la cantidad de movimientos para añadir dificultad ⌛
+#limitar la cantidad de movimientos para añadir dificultad ✅
+
+#Problemas:
+#La generación de luces no corresponde con el número indicado por encima del mapa mostrado en la ejecución.
+#Probablemente hayan puntos que se esten sobreescribiendo.
