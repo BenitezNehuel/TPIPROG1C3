@@ -2,7 +2,7 @@ def iniciarJuego():
     salir = False
     while salir == False:
         print("🤖 LightBot 💡")
-        print("1) Cargar partida (Nivel",cargarEstadisticas()["nivel"]+")")
+        print("1) Cargar partida (Nivel",str(cargarEstadisticas()["nivel"])+")")
         print("2) Reiniciar progreso")
         print("3) Salir")
         opcion = str(input("-> "))
@@ -16,12 +16,11 @@ def iniciarJuego():
                 salir=True #Hay que conectarlo al menú
 
 def reiniciarEstadisticas():
-    estadisticas = open("estadisticas.txt", "w")
-    nivel = 1
-    luces_conseguidas = 0
-    tiempo_jugado = 0
-    estadisticas.write("nivel "+str(nivel)+"\nluces_conseguidas "+str(luces_conseguidas)+"\ntiempo_jugado "+str(tiempo_jugado))
-    estadisticas.close()
+    with open("estadisticas.txt", "w") as estadisticas:
+        nivel = 1
+        luces_conseguidas = 0
+        tiempo_jugado = 0
+        estadisticas.write("nivel "+str(nivel)+"\nluces_conseguidas "+str(luces_conseguidas)+"\ntiempo_jugado "+str(tiempo_jugado))
 
 def cargarEstadisticas():
     estadisticas = open("estadisticas.txt", "r")
@@ -29,11 +28,15 @@ def cargarEstadisticas():
     estadisticas_separadas = estadisticas.readlines()
     for linea in estadisticas_separadas:
         clave = (linea.strip().split())[0]
-        valor = (linea.strip().split())[1]
+        valor = int((linea.strip().split())[1])
         datos[clave] = valor
     estadisticas.close()
     print(datos)
     return datos
+
+def actualizarEstadisticas():
+    with open("estadisticas.txt", "w") as estadisticas:
+        estadisticas.write("nivel "+str(datos["nivel"])+"\nluces_conseguidas "+str(datos["luces_conseguidas"])+"\ntiempo_jugado "+str(datos["tiempo_jugado"]))
 
 def puntoMasCercano():
     distancia = 999
@@ -48,7 +51,7 @@ def puntoMasCercano():
     r = ("El punto más cercano esta a",distancia,"movimientos\nEn x",luz_cercana_posicion[0],". y",luz_cercana_posicion[1])
     return r
 
-def distanciaManhattan(fila,columna): 
+def distanciaManhattan(fila,columna):
     #La formula es (x2-x1)+(y2-y1)
     #Se debe usar el valor absoluto del resultado de cada resta.
     return valorAbsoluto(fila-posicion_jugador[0])+valorAbsoluto(columna-posicion_jugador[1])
@@ -64,6 +67,7 @@ def crearNivel(posicion_jugador):
     return nivel
 
 def mostrarNivel():
+    print("| Nivel",datos["nivel"],"| Puntos restantes",cantidadPuntos,"|")
     for i in range(filas):
         for j in range(columnas):
             print(nivel[i][j],end="")
@@ -76,27 +80,41 @@ def movimiento(movimientos, posicion_jugador):
         match int(movimientos[i]):
             case 1: #Derecha
                 posicion_jugador[1] = posicion_jugador[1]+1
+                verificarLuz()
                 nivel[posicion_jugador[0]][posicion_jugador[1]] = "🤖"
                 mostrarNivel()
                 print(posicion_jugador)
             case 2: #Izquierda
                 posicion_jugador[1] = posicion_jugador[1]-1
+                verificarLuz()
                 nivel[posicion_jugador[0]][posicion_jugador[1]] = "🤖"
                 mostrarNivel()
                 print(posicion_jugador)
             case 3: #Arriba
                 posicion_jugador[0] = posicion_jugador[0]-1
+                verificarLuz()
                 nivel[posicion_jugador[0]][posicion_jugador[1]] = "🤖"
                 mostrarNivel()
                 print(posicion_jugador)
             case 4: #Abajo
                 posicion_jugador[0] = posicion_jugador[0]+1
+                verificarLuz()
+                print("cantidad_puntos ==",cantidadPuntos)
                 nivel[posicion_jugador[0]][posicion_jugador[1]] = "🤖"
                 mostrarNivel()
                 print(posicion_jugador)
             case _:
                 print("La secuencia no es correcta")
                 break
+        
+
+def verificarLuz():
+    global cantidadPuntos
+    if nivel[posicion_jugador[0]][posicion_jugador[1]] == "💡":
+        print("Luz encontrada")
+        datos["luces_conseguidas"]+=1
+        cantidadPuntos-=1
+        actualizarEstadisticas()
 
 def crearPuntos(cantidadPuntos,posicion_jugador):
     puntos_creados = 0
@@ -108,20 +126,19 @@ def crearPuntos(cantidadPuntos,posicion_jugador):
 
 #-----------Programa principal -----------
 import random 
+import os
 
 #Inicio del juego - menú
 global datos
 datos = iniciarJuego()
-
+os.system('cls')
 #Definir area del nivel
 global filas
 global columnas
 
-
 filas= int(datos["nivel"])+3
 
 columnas= int(datos["nivel"])+3
-
 
 #Cargar posicion inicial del jugador
 #¿Hacer aleatoria o iniciar en niveles fijos?
@@ -129,7 +146,8 @@ posicion_jugador = [0,0]
 nivel = crearNivel(posicion_jugador)
 
 #Crear puntos por los que el jugador debe pasar.
-cantidadPuntos = random.randint(0,4)
+global cantidadPuntos
+cantidadPuntos = (random.randint(1,2))*int(datos["nivel"])
 crearPuntos(cantidadPuntos,posicion_jugador)
 
 
@@ -140,6 +158,7 @@ while not salir:
     print("1) Derecha.\n2) Izquierda.\n3)Arriba.\n4) Abajo.\n10) Salir.")
     movimientos = input("Ingrese la secuencia de movimientos separadas por espacios")
     if movimientos != "10":
+        os.system('cls')
         movimiento(movimientos,posicion_jugador)
     else:
         salir = True
