@@ -39,7 +39,6 @@ def iniciarNivel():
     columnas= int(datos["nivel"])+3
 
     #Cargar posicion inicial del jugador
-    #¿Hacer aleatoria o iniciar en niveles fijos?ç
     global posicion_jugador
     posicion_jugador = [0,0]
     global nivel
@@ -64,7 +63,7 @@ def juegoMenu():
     while not salir:
         distancia = puntoMasCercano()
         print("1) Derecha.\n2) Izquierda.\n3) Arriba.\n4) Abajo.\n10) Salir.")
-        movimientos = input("Ingrese la secuencia de movimientos separadas por espacios")
+        movimientos = input("Ingrese la secuencia de movimientos separadas por espacios: ")
         if movimientos != "10":
             if len(sacarEspacios(movimientos))<=distancia:
                 os.system('cls')
@@ -249,11 +248,3 @@ ultima_luz_encontrada=[0,0]
 global datos
 datos = iniciarJuego()
 iniciarNivel()
-
-
-#Anotaciones:
-#limitar la cantidad de movimientos para añadir dificultad ✅
-
-#Problemas:
-#La generación de luces no corresponde con el número indicado por encima del mapa mostrado en la ejecución.
-#Probablemente hayan puntos que se esten sobreescribiendo. ✅
