@@ -15,6 +15,30 @@ def iniciarJuego():
             case "3":
                 salir=True #Hay que conectarlo al menú
 
+def iniciarNivel():
+    global datos
+    datos = iniciarJuego()
+    os.system('cls')
+    #Definir area del nivel
+    global filas
+    global columnas
+
+    filas= int(datos["nivel"])+3
+
+    columnas= int(datos["nivel"])+3
+
+    #Cargar posicion inicial del jugador
+    #¿Hacer aleatoria o iniciar en niveles fijos?ç
+    global posicion_jugador
+    posicion_jugador = [0,0]
+    global nivel
+    nivel = crearNivel(posicion_jugador)
+
+    #Crear puntos por los que el jugador debe pasar.
+    global cantidadPuntos
+    cantidadPuntos = (random.randint(1,2))*int(datos["nivel"])
+    crearPuntos(cantidadPuntos,posicion_jugador)
+
 def reiniciarEstadisticas():
     with open("estadisticas.txt", "w") as estadisticas:
         nivel = 1
@@ -99,14 +123,27 @@ def movimiento(movimientos, posicion_jugador):
             case 4: #Abajo
                 posicion_jugador[0] = posicion_jugador[0]+1
                 verificarLuz()
-                print("cantidad_puntos ==",cantidadPuntos)
                 nivel[posicion_jugador[0]][posicion_jugador[1]] = "🤖"
                 mostrarNivel()
                 print(posicion_jugador)
             case _:
                 print("La secuencia no es correcta")
                 break
-        
+        if cantidadPuntos==0:
+            terminarNivel()
+        break
+            
+def terminarNivel():
+    os.system("cls")
+    for i in range(3):
+        print("Solución correcta\nPasando al siguiente nivel")
+        for i in range(3):
+            print(".",end=" ")
+            time.sleep(0.6)
+        os.system("cls")
+    datos["nivel"]+=1
+    actualizarEstadisticas()
+
 
 def verificarLuz():
     global cantidadPuntos
@@ -125,31 +162,12 @@ def crearPuntos(cantidadPuntos,posicion_jugador):
             puntos_creados +=1
 
 #-----------Programa principal -----------
-import random 
+import random
+import time
 import os
 
 #Inicio del juego - menú
-global datos
-datos = iniciarJuego()
-os.system('cls')
-#Definir area del nivel
-global filas
-global columnas
-
-filas= int(datos["nivel"])+3
-
-columnas= int(datos["nivel"])+3
-
-#Cargar posicion inicial del jugador
-#¿Hacer aleatoria o iniciar en niveles fijos?
-posicion_jugador = [0,0]
-nivel = crearNivel(posicion_jugador)
-
-#Crear puntos por los que el jugador debe pasar.
-global cantidadPuntos
-cantidadPuntos = (random.randint(1,2))*int(datos["nivel"])
-crearPuntos(cantidadPuntos,posicion_jugador)
-
+iniciarNivel()
 
 salir = False
 mostrarNivel()
