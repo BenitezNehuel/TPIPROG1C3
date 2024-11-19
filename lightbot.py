@@ -16,8 +16,6 @@ def iniciarJuego():
                 salir=True #Hay que conectarlo al menú
 
 def iniciarNivel():
-    global datos
-    datos = iniciarJuego()
     os.system('cls')
     #Definir area del nivel
     global filas
@@ -38,6 +36,20 @@ def iniciarNivel():
     global cantidadPuntos
     cantidadPuntos = (random.randint(1,2))*int(datos["nivel"])
     crearPuntos(cantidadPuntos,posicion_jugador)
+    juegoMenu()
+
+def juegoMenu():
+    salir = False
+    mostrarNivel()
+    while not salir:
+        print(puntoMasCercano())
+        print("1) Derecha.\n2) Izquierda.\n3)Arriba.\n4) Abajo.\n10) Salir.")
+        movimientos = input("Ingrese la secuencia de movimientos separadas por espacios")
+        if movimientos != "10":
+            os.system('cls')
+            movimiento(movimientos,posicion_jugador)
+        else:
+            salir = True
 
 def reiniciarEstadisticas():
     with open("estadisticas.txt", "w") as estadisticas:
@@ -131,7 +143,10 @@ def movimiento(movimientos, posicion_jugador):
                 break
         if cantidadPuntos==0:
             terminarNivel()
-        break
+            global datos
+            datos = cargarEstadisticas()
+            iniciarNivel()
+            break
             
 def terminarNivel():
     os.system("cls")
@@ -143,7 +158,6 @@ def terminarNivel():
         os.system("cls")
     datos["nivel"]+=1
     actualizarEstadisticas()
-
 
 def verificarLuz():
     global cantidadPuntos
@@ -167,19 +181,11 @@ import time
 import os
 
 #Inicio del juego - menú
+global datos
+datos = iniciarJuego()
 iniciarNivel()
 
-salir = False
-mostrarNivel()
-while not salir:
-    print(puntoMasCercano())
-    print("1) Derecha.\n2) Izquierda.\n3)Arriba.\n4) Abajo.\n10) Salir.")
-    movimientos = input("Ingrese la secuencia de movimientos separadas por espacios")
-    if movimientos != "10":
-        os.system('cls')
-        movimiento(movimientos,posicion_jugador)
-    else:
-        salir = True
+
 
 #Anotaciones:
 #limitar la cantidad de movimientos para añadir dificultad ⌛
