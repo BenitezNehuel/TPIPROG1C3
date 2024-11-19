@@ -38,16 +38,29 @@ def iniciarNivel():
     crearPuntos(cantidadPuntos,posicion_jugador)
     juegoMenu()
 
+def sacarEspacios(movimientos):
+    movs_sin_espacio = ""
+    for i in range(len(movimientos)):
+        if movimientos[i]>="0" and movimientos[i]<="9":
+            movs_sin_espacio+=movimientos[i]
+    return movs_sin_espacio
+
 def juegoMenu():
     salir = False
     mostrarNivel()
     while not salir:
-        print(puntoMasCercano())
-        print("1) Derecha.\n2) Izquierda.\n3)Arriba.\n4) Abajo.\n10) Salir.")
+        distancia = puntoMasCercano()
+        print("1) Derecha.\n2) Izquierda.\n3) Arriba.\n4) Abajo.\n10) Salir.")
         movimientos = input("Ingrese la secuencia de movimientos separadas por espacios")
         if movimientos != "10":
-            os.system('cls')
-            movimiento(movimientos,posicion_jugador)
+            if len(sacarEspacios(movimientos))<=distancia:
+                os.system('cls')
+                sacarEspacios(movimientos)
+                movimiento(movimientos,posicion_jugador)
+            else:
+                os.system('cls')
+                print("La secuencia ingresada excede la cantidad de movimientos permitodos en este momento.")
+                mostrarNivel()
         else:
             salir = True
 
@@ -84,8 +97,9 @@ def puntoMasCercano():
                     distancia=distanciaManhattan(fila,columna)
                     luz_cercana_posicion[0] = fila
                     luz_cercana_posicion[1] = columna
-    r = ("El punto más cercano esta a",distancia,"movimientos\nEn x",luz_cercana_posicion[0],". y",luz_cercana_posicion[1])
-    return r
+    #r = ("El punto más cercano esta a",distancia,"movimientos\nEn x",luz_cercana_posicion[0],". y",luz_cercana_posicion[1])
+    print("Tienes",distancia,"movimientos máximos para llegar a la luz más cercana")
+    return distancia
 
 def distanciaManhattan(fila,columna):
     #La formula es (x2-x1)+(y2-y1)
@@ -110,13 +124,21 @@ def mostrarNivel():
         print("")
 
 def movimiento(movimientos, posicion_jugador):
+    global nivel
+    nivel_copia = [["⬜" for i in range(columnas)] for j in range(filas)]
+    for fila in range(filas):
+        for columna in range(columnas):
+            nivel_copia[fila][columna] = nivel[fila][columna]
+
+    luz_encontrada = False
     #Recorrer la cadena con la secuencia de movimientos ingresada
     for i in range(0,len(movimientos),2):
         nivel[posicion_jugador[0]][posicion_jugador[1]] = "⬜"
+        os.system("cls")
         match int(movimientos[i]):
             case 1: #Derecha
                 posicion_jugador[1] = posicion_jugador[1]+1
-                verificarLuz()
+                luz_encontrada = verificarLuz()
                 nivel[posicion_jugador[0]][posicion_jugador[1]] = "🤖"
                 mostrarNivel()
                 print(posicion_jugador)
@@ -140,6 +162,7 @@ def movimiento(movimientos, posicion_jugador):
                 print(posicion_jugador)
             case _:
                 print("La secuencia no es correcta")
+                nivel = nivel_copia
                 break
         if cantidadPuntos==0:
             terminarNivel()
@@ -147,6 +170,17 @@ def movimiento(movimientos, posicion_jugador):
             datos = cargarEstadisticas()
             iniciarNivel()
             break
+        time.sleep(0.5)
+    if not luz_encontrada:
+        print("la secuencia no es correcta, regresando a la posición inicial.")
+        for i in range(5,0,-1):
+            time.sleep(1)
+            print("Reiniciando en",i,"segundos.")
+        os.system("cls")
+        nivel = nivel_copia
+        posicion_jugador[0] = 0
+        posicion_jugador[1] = 0
+        mostrarNivel()
             
 def terminarNivel():
     os.system("cls")
@@ -166,6 +200,7 @@ def verificarLuz():
         datos["luces_conseguidas"]+=1
         cantidadPuntos-=1
         actualizarEstadisticas()
+        return True
 
 def crearPuntos(cantidadPuntos,posicion_jugador):
     puntos_creados = 0
@@ -186,12 +221,5 @@ datos = iniciarJuego()
 iniciarNivel()
 
 
-
 #Anotaciones:
 #limitar la cantidad de movimientos para añadir dificultad ⌛
-#Generar puntos por los que el jugador deba pasar ✔
-
-
-#Sugerencias y revisiones:
-#Esto de acá abajo se puede hacer tanto como no
-#*Añadir una opción de encender luz para evitar que se pueda resolver recorriendo todo aleatoriamente*
