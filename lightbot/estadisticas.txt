@@ -1,3 +1,3 @@
-nivel 2
-luces_conseguidas 3
-tiempo_jugado 49
+nivel 0
+luces_conseguidas 0
+tiempo_jugado 0

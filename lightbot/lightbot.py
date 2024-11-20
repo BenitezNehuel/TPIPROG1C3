@@ -18,6 +18,7 @@ def iniciarJuego():
                 return cargarEstadisticas()
             case "3":
                 salir=True #Hay que conectarlo al menú
+                return "cerrar juego"
         os.system("cls")
 
 def tiempoJugado(tiempo):
@@ -205,7 +206,8 @@ def movimiento(movimientos, posicion_jugador):
         mostrarNivel()
             
 def terminarNivel():
-    os.system("cls")
+    print("")
+    #os.system("cls")
     for i in range(3):
         print("Solución correcta\nPasando al siguiente nivel")
         for i in range(3):
@@ -248,10 +250,17 @@ def lightBot():
     global datos
     datos = iniciarJuego()
     
-    if type(datos)!="<class 'NoneType'>":
+    if datos!="cerrar juego":
         iniciarNivel()
     else:
-        volver_al_menu = str(input("Ingrese cualquier dato para salir del juego"))
+        os.system("cls")
+        for i in range(3):
+            print("Cerrando juego, volviendo al menú principal.")
+            for i in range(3):
+                print(".",end=" ")
+                time.sleep(0.2)
+            os.system("cls")
+        
 
 if __name__ == "__main__":
     lightBot()

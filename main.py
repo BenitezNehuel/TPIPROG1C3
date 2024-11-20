@@ -10,8 +10,9 @@ def main():
     while salir==False:
         print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         print("Ingrese el número correspondiente al juego que quiera iniciar:")
-        print("1) Juego de escapismo")
-        print("2) LightBot")
+        print("1) Juego de escapismo.")
+        print("2) LightBot.")
+        print("3) Salir.")
         opcion = str(input("-> "))
         match opcion:
             case "1":
@@ -20,6 +21,8 @@ def main():
             case "2":
                 lightBot()
                 os.system("cls")
+            case "3":
+                salir = True
             case _:
                 print("Opción no válida.")
 
