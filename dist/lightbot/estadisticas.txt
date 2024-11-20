@@ -1,3 +1,3 @@
-nivel 1
+nivel 0
 luces_conseguidas 0
 tiempo_jugado 0
