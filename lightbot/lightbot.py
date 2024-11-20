@@ -60,7 +60,7 @@ def sacarEspacios(movimientos):
 def juegoMenu():
     salir = False
     mostrarNivel()
-    while not salir:
+    while salir==False:
         distancia = puntoMasCercano()
         print("1) Derecha.\n2) Izquierda.\n3) Arriba.\n4) Abajo.\n10) Salir.")
         movimientos = input("Ingrese la secuencia de movimientos separadas por espacios: ")
@@ -80,14 +80,14 @@ def juegoMenu():
             salir = True
 
 def reiniciarEstadisticas():
-    with open("estadisticas.txt", "w") as estadisticas:
+    with open("lightbot\estadisticas.txt", "w") as estadisticas:
         nivel = 1
         luces_conseguidas = 0
         tiempo_jugado = 0
         estadisticas.write("nivel "+str(nivel)+"\nluces_conseguidas "+str(luces_conseguidas)+"\ntiempo_jugado "+str(tiempo_jugado))
 
 def cargarEstadisticas():
-    estadisticas = open("estadisticas.txt", "r")
+    estadisticas = open("lightbot\estadisticas.txt", "r")
     datos = {}
     estadisticas_separadas = estadisticas.readlines()
     for linea in estadisticas_separadas:
@@ -99,7 +99,7 @@ def cargarEstadisticas():
     return datos
 
 def actualizarEstadisticas():
-    with open("estadisticas.txt", "w") as estadisticas:
+    with open("lightbot\estadisticas.txt", "w") as estadisticas:
         estadisticas.write("nivel "+str(datos["nivel"])+"\nluces_conseguidas "+str(datos["luces_conseguidas"])+"\ntiempo_jugado "+str(datos["tiempo_jugado"]))
 
 def puntoMasCercano():
@@ -239,12 +239,19 @@ import random
 import time
 import os
 
-os.system("cls")
+def lightBot():
+    #Limpiar pantalla para quitar el menú
+    os.system("cls")
+    global ultima_luz_encontrada
+    ultima_luz_encontrada=[0,0]
+    #Inicio del juego - menú
+    global datos
+    datos = iniciarJuego()
+    
+    if type(datos)!="<class 'NoneType'>":
+        iniciarNivel()
+    else:
+        volver_al_menu = str(input("Ingrese cualquier dato para salir del juego"))
 
-global ultima_luz_encontrada
-ultima_luz_encontrada=[0,0]
-
-#Inicio del juego - menú
-global datos
-datos = iniciarJuego()
-iniciarNivel()
+if __name__ == "__main__":
+    lightBot()
