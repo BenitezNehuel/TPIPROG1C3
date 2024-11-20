@@ -5,7 +5,7 @@ escape = False
 llave = False
 ultravioleta = False
 
-#variables que dibujan con ASCII
+#funciones que dibujan con ASCII
 def candadoCerrado():
     print("       _____________ ")
     print("      |             |")
