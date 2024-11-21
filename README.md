@@ -1,6 +1,6 @@
 ## **Integrantes:**
 
-Legajo 16279, **Benitez Nehuel**  
+Legajo 17303, **Benitez Nehuel**  
 [nehuelbenitez2961@gmail.com](mailto:nehuelbenitez2961@gmail.com)  
 https://github.com/BenitezNehuel
 
@@ -8,7 +8,7 @@ Legajo 16332, **Fabian Arburua**
 fabianarburua@gmail.com  
 https://github.com/Fabianarburua  
 
-DNI 44.531.197, **Olivero Lautaro**  
+Legajo 17428, **Olivero Lautaro**  
 [lautaroolivero44@gmail.com](mailto:lautaroolivero44@gmail.com)  
 https://github.com/LautiOlivero  
 
